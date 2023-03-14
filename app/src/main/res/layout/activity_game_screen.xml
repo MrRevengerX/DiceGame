@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GameScreen">
+
+    <LinearLayout
+        android:id="@+id/diceColumns"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center|center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/ibtnHuman1"
+                android:layout_width="200dp"
+                android:layout_height="70dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/Gray"
+                android:contentDescription="@string/die_for_human"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/die_1"
+                tools:ignore="SpeakableTextPresentCheck,DuplicateSpeakableTextCheck" />
+
+            <ImageButton
+                android:id="@+id/ibtnHuman2"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/Gray"
+                android:contentDescription="@string/die_for_human"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/die_2" />
+
+            <ImageButton
+                android:id="@+id/ibtnHuman3"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/Gray"
+                android:contentDescription="@string/die_for_human"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/die_3" />
+
+            <ImageButton
+                android:id="@+id/ibtnHuman4"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/Gray"
+                android:contentDescription="@string/die_for_human"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/die_4" />
+
+            <ImageButton
+                android:id="@+id/ibtnHuman5"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/Gray"
+                android:contentDescription="@string/die_for_human"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/die_5" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/ibtnComputer1"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/Gray"
+                android:clickable="false"
+                android:contentDescription="@string/die_for_computer"
+                android:contextClickable="false"
+                android:longClickable="false"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/die_1" />
+
+            <ImageButton
+                android:id="@+id/ibtnComputer2"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/Gray"
+                android:clickable="false"
+                android:contentDescription="@string/die_for_computer"
+                android:contextClickable="false"
+                android:longClickable="false"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/die_2" />
+
+            <ImageButton
+                android:id="@+id/ibtnComputer3"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/Gray"
+                android:clickable="false"
+                android:contentDescription="@string/die_for_computer"
+                android:contextClickable="false"
+                android:longClickable="false"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/die_3" />
+
+            <ImageButton
+                android:id="@+id/ibtnComputer4"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/Gray"
+                android:clickable="false"
+                android:contentDescription="@string/die_for_computer"
+                android:contextClickable="false"
+                android:longClickable="false"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/die_4" />
+
+            <ImageButton
+                android:id="@+id/ibtnComputer5"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/Gray"
+                android:clickable="false"
+                android:contentDescription="@string/die_for_computer"
+                android:contextClickable="false"
+                android:longClickable="false"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/die_5" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/diceColumns">
+
+        <Button
+            android:id="@+id/btnThrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Throw" />
+
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="10" />
+
+        <Button
+            android:id="@+id/btnScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Score" />
+
+    </LinearLayout>
+
+</RelativeLayout>

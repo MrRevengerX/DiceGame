@@ -34,6 +34,7 @@
             android:id="@+id/btnNewGame"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
             android:text="New Game"
             app:icon="@android:drawable/ic_media_play"
             app:iconSize="15sp" />
@@ -43,6 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
+            android:backgroundTint="@color/white"
             android:text="Info"
             app:icon="@android:drawable/ic_dialog_info"
             app:iconSize="12sp" />
