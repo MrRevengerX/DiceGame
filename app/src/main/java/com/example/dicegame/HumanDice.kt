@@ -23,5 +23,13 @@ class HumanDice(diceBtns: Array<ImageButton>) {
         }
     }
 
+    fun totalScore(): Int {
+        var total = 0
+        for (die in this.dice) {
+            total += die.getDieValue()
+        }
+        return total
+    }
+
 
 }

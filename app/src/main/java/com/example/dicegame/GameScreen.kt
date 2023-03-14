@@ -1,5 +1,6 @@
 package com.example.dicegame
 
+import android.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -31,11 +32,13 @@ class GameScreen : AppCompatActivity() {
         val computer = ComputerDice(computerDice)
 
         val btnThrow = findViewById<Button>(R.id.btnThrow)
+        val btnScore = findViewById<Button>(R.id.btnScore)
 
         btnThrow.setOnClickListener(){
             rethrowCount++
             if (rethrowCount > 0)
                 btnThrow.text = "Re-Throw"
+                btnScore.isEnabled = true
                 humanDice.forEachIndexed() { index, btn ->
                     btn.setOnClickListener() {
                         if (!human.getDice()[index].isDieEnabled() || human.lockDiceCount() < 4) {
@@ -57,6 +60,18 @@ class GameScreen : AppCompatActivity() {
             }
             human.throwDice()
             computer.throwDice()
+        }
+
+        btnScore.setOnClickListener(){
+            val humanScore = human.totalScore()
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Score")
+            builder.setMessage("Human Score: $humanScore")
+            builder.setPositiveButton("OK") { dialog, which ->
+                // do something when OK button is clicked
+            }
+            val dialog = builder.create()
+            dialog.show()
         }
 
     }
