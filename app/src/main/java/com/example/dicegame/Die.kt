@@ -9,8 +9,6 @@ class Die(DieImage: ImageButton) {
     private var enabled: Boolean = true
     private var die: ImageButton = DieImage
     private val dieImages: Array<Int> = arrayOf(R.drawable.die_1, R.drawable.die_2, R.drawable.die_3, R.drawable.die_4, R.drawable.die_5, R.drawable.die_6)
-    private val dieImagesLocked: Array<Int> = arrayOf(R.drawable.die_1_locked, R.drawable.die_2_locked, R.drawable.die_3_locked, R.drawable.die_4_locked, R.drawable.die_5_locked, R.drawable.die_6_locked)
-
 
     fun rollDie() {
         if (enabled) {
@@ -29,11 +27,7 @@ class Die(DieImage: ImageButton) {
 
     fun dieEnableToggle() {
 //        change die image to disable state
-        if (enabled) {
-            die.setImageResource(dieImagesLocked[dieValue - 1])
-        } else {
-            die.setImageResource(dieImages[dieValue - 1])
-        }
+        die.isEnabled = !enabled
         enabled = !enabled
     }
 }

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 
 class GameScreen : AppCompatActivity() {
@@ -35,9 +36,22 @@ class GameScreen : AppCompatActivity() {
             rethrowCount++
             if (rethrowCount > 0)
                 btnThrow.text = "Re-Throw"
+                humanDice.forEachIndexed() { index, btn ->
+                    btn.setOnClickListener() {
+                        if (!human.getDice()[index].isDieEnabled() || human.lockDiceCount() < 4) {
+                            human.getDice()[index].dieEnableToggle()
+                        }
+                        else{
+                            Toast.makeText(this, "You can only lock 4 dice", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
 
 
             if (rethrowCount > 2) {
+                for (die in humanDice){
+                    die.isEnabled = false
+                }
                 btnThrow.isEnabled = false
                 btnThrow.setBackgroundColor(ContextCompat.getColor(this, R.color.Gray))
             }
