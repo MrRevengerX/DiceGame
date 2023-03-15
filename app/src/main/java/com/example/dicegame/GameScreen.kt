@@ -21,8 +21,10 @@ class GameScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game_screen)
 
-
-
+        val targetScore = intent.getIntExtra("targetScore", 0)
+//        Set the target score to the user entered value
+        val tvTargetScore = findViewById<TextView>(R.id.tvTargetScore)
+        tvTargetScore.text = targetScore.toString()
 
         gameStart()
 
@@ -100,6 +102,12 @@ class GameScreen : AppCompatActivity() {
             humanDice.forEach {
                 it.setOnClickListener { null }
             }
+
+//            Resetting score after submitting the score
+            tvHumanScore.text = "-"
+            tvComputerScore.text = "-"
+
+//            Calling the resetDices function to reset the game
             resetDices(human,computer)
         }
     }

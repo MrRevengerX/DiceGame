@@ -4,6 +4,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 
 class MainActivity : AppCompatActivity() {
@@ -11,6 +13,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val inputTargetScore = findViewById<EditText>(R.id.inputTargetScore)
 
 //        #get info btn
         val btnInfo = findViewById<Button>(R.id.btnInfo)
@@ -20,8 +24,17 @@ class MainActivity : AppCompatActivity() {
 
         val btnNewGame = findViewById<Button>(R.id.btnNewGame)
         btnNewGame.setOnClickListener(){
-            val intent = Intent(this, GameScreen::class.java)
-            startActivity(intent)
+            val targetScore = inputTargetScore.text.toString()
+//            If the target score is not entered, setting the value to 101 and send the value to the next activity
+            if (targetScore == "") {
+                val intent = Intent(this, GameScreen::class.java)
+                intent.putExtra("targetScore", 101)
+                startActivity(intent)
+            } else {
+                val intent = Intent(this, GameScreen::class.java)
+                intent.putExtra("targetScore", targetScore.toInt())
+                startActivity(intent)
+            }
         }
     }
 
