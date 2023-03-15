@@ -18,11 +18,17 @@ class GameScreen : AppCompatActivity() {
     private var totalComputerScore = 0
     private var targetScore = 0
     private var rethrowCount: Int = 0
+    private var allowedThrows: Int = 3
+    private lateinit var human: HumanDice
+    private lateinit var computer: ComputerDice
 
-    @SuppressLint("SuspiciousIndentation")
+    private var savedInstanceState: Bundle? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game_screen)
+        supportActionBar?.hide()
 
         targetScore = intent.getIntExtra("targetScore", 0)
 
@@ -31,9 +37,6 @@ class GameScreen : AppCompatActivity() {
         tvTargetScore.text = targetScore.toString()
 
         gameStart()
-
-
-
     }
 
     private fun gameStart(){
@@ -60,8 +63,9 @@ class GameScreen : AppCompatActivity() {
         val computerDice = arrayOf(btnComputerDie1, btnComputerDie2, btnComputerDie3, btnComputerDie4, btnComputerDie5)
 
 //        Creating objects for the human and computer
-        val human = HumanDice(humanDice)
-        val computer = ComputerDice(computerDice)
+        Toast.makeText(this, "Creating objects", Toast.LENGTH_SHORT).show()
+        human = HumanDice(humanDice)
+        computer = ComputerDice(computerDice)
 
 
 //        Adding click event listener to throw button
@@ -97,7 +101,6 @@ class GameScreen : AppCompatActivity() {
 //            If rethrow count is greater than 2, disable the throw button and add score to the total score
             if (rethrowCount > 2) {
                 btnThrow.isEnabled = false
-                btnScore.isEnabled = false
 
                 Toast.makeText(this, "Out of throws! Score will update soon", Toast.LENGTH_SHORT).show()
 //                Reset game after using all throws
@@ -105,8 +108,8 @@ class GameScreen : AppCompatActivity() {
                     calScore(human,computer)
                     resetGame(human, computer)
                 }, 1000)
-
-
+            }else{
+//                Toast.makeText(this, "${allowedThrows-rethrowCount} throws left.", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -132,8 +135,6 @@ class GameScreen : AppCompatActivity() {
         val tvHumanScore = findViewById<TextView>(R.id.tvHumanScore)
         val tvComputerScore = findViewById<TextView>(R.id.tvComputerScore)
 
-        gameStart()
-
 //            Disable dice lock after score is submitted
         human.getDieButtonArray().forEach {
             it.setOnClickListener { null }
@@ -156,6 +157,64 @@ class GameScreen : AppCompatActivity() {
 
         // Reset the number of rethrows
         rethrowCount = 0
+
+        gameStart()
     }
 
+//    save data when rotating device
+//    override fun onSaveInstanceState(outState: Bundle) {
+//        super.onSaveInstanceState(outState)
+//        outState.putInt("totalHumanScore", totalHumanScore)
+//        outState.putInt("totalComputerScore", totalComputerScore)
+//        outState.putInt("rethrowCount", rethrowCount)
+//        outState.putSerializable("computerDice", computer)
+//        outState.putSerializable("humanDice", human)
+//    }
+//
+//    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+//        super.onRestoreInstanceState(savedInstanceState)
+//        totalHumanScore = savedInstanceState.getInt("totalHumanScore")
+//        totalComputerScore = savedInstanceState.getInt("totalComputerScore")
+//        rethrowCount = savedInstanceState.getInt("rethrowCount")
+//
+//        human = savedInstanceState.getSerializable("humanDice") as HumanDice
+//        computer = savedInstanceState.getSerializable("computerDice") as ComputerDice
+//
+//        val tvTotalHumanScore = findViewById<TextView>(R.id.tvTotalHumanScore)
+//        val tvTotalComputerScore = findViewById<TextView>(R.id.tvTotalComputerScore)
+//        tvTotalHumanScore.text = totalHumanScore.toString()
+//        tvTotalComputerScore.text = totalComputerScore.toString()
+//
+//        val tvHumanDice = findViewById<TextView>(R.id.tvHumanScore)
+//        val tvComputerDice = findViewById<TextView>(R.id.tvComputerScore)
+//        tvHumanDice.text = human.totalScore().toString()
+//        tvComputerDice.text = computer.totalScore().toString()
+//        Toast.makeText(this, "Restoring data", Toast.LENGTH_SHORT).show()
+//
+//        reDrawDices(human, computer)
+//
+//    }
+////
+//    private fun reDrawDices(resHuman: HumanDice, resComputer: ComputerDice) {
+////        Get value of each dice and show them in a toast
+//        Toast.makeText(this, "${resHuman.getDice()[0].getDieValue()},${resHuman.getDice()[1].getDieValue()},${resHuman.getDice()[2].getDieValue()},${resHuman.getDice()[3].getDieValue()},${resHuman.getDice()[4].getDieValue()}", Toast.LENGTH_SHORT).show()
+////        human.getDice()[0].setDieValue(resHuman.getDice()[0].getDieValue())
+//        var ibtnHuman1 = findViewById<ImageButton>(R.id.ibtnHuman1)
+//        var ibtnHuman2 = findViewById<ImageButton>(R.id.ibtnHuman2)
+//        var ibtnHuman3 = findViewById<ImageButton>(R.id.ibtnHuman3)
+//        var ibtnHuman4 = findViewById<ImageButton>(R.id.ibtnHuman4)
+//        var ibtnHuman5 = findViewById<ImageButton>(R.id.ibtnHuman5)
+//
+//        ibtnHuman1.setImageResource(resHuman.getDice()[0].getDieImage(resHuman.getDice()[0].getDieValue()-1))
+//        ibtnHuman2.setImageResource(resHuman.getDice()[1].getDieImage(resHuman.getDice()[1].getDieValue()-1))
+//        ibtnHuman3.setImageResource(resHuman.getDice()[2].getDieImage(resHuman.getDice()[2].getDieValue()-1))
+//        ibtnHuman4.setImageResource(resHuman.getDice()[3].getDieImage(resHuman.getDice()[3].getDieValue()-1))
+//        ibtnHuman5.setImageResource(resHuman.getDice()[4].getDieImage(resHuman.getDice()[4].getDieValue()-1))
+//
+////        resHuman.getDice().forEachIndexed() { index, die ->
+////            human.reDrawDie(index, die.getDieValue())
+////        }
+//
+//
+//    }
 }

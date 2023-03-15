@@ -4,7 +4,7 @@ import android.widget.ImageButton
 import android.content.res.Resources
 import android.content.Context
 
-class Die(DieImage: ImageButton) {
+class Die(DieImage: ImageButton): java.io.Serializable {
     private var dieValue: Int = 0
     private var enabled: Boolean = true
     private var die: ImageButton = DieImage
@@ -22,6 +22,14 @@ class Die(DieImage: ImageButton) {
     fun setDieValue(value: Int) {
         dieValue = value
         die.setImageResource(dieImages[dieValue - 1])
+    }
+
+    fun getDieImage(value: Int): Int {
+        return dieImages[value]
+    }
+
+    fun setDieImage(num:Int) {
+        die.setImageResource(dieImages[num-1])
     }
 
     fun isDieEnabled(): Boolean {

@@ -1,8 +1,10 @@
 package com.example.dicegame
 
+import android.os.Parcelable
 import android.widget.ImageButton
+import java.io.Serializable
 
-open class Player(diceBtns: Array<ImageButton>) {
+open class Player(diceBtns: Array<ImageButton>) : Serializable {
     private var dieBtns = diceBtns
     private val dice: Array<Die> = arrayOf(Die(diceBtns[0]), Die(diceBtns[1]), Die(diceBtns[2]), Die(diceBtns[3]), Die(diceBtns[4]))
 
@@ -22,6 +24,10 @@ open class Player(diceBtns: Array<ImageButton>) {
         for (die in this.dice) {
             die.rollDie()
         }
+    }
+
+    fun reDrawDie(index: Int,value: Int) {
+        dice[index].setDieImage(value)
     }
 
     fun getDieButtonArray(): Array<ImageButton> {
