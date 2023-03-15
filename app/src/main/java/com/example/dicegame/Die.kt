@@ -19,6 +19,11 @@ class Die(DieImage: ImageButton) {
         }
     }
 
+    fun setDieValue(value: Int) {
+        dieValue = value
+        die.setImageResource(dieImages[dieValue - 1])
+    }
+
     fun isDieEnabled(): Boolean {
         return enabled
     }

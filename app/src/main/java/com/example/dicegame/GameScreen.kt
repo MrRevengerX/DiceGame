@@ -1,18 +1,40 @@
 package com.example.dicegame
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 
 class GameScreen : AppCompatActivity() {
+
+    private var totalHumanScore = 0
+    private var totalComputerScore = 0
     private var rethrowCount: Int = 0
+
+    @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game_screen)
+
+
+
+
+        gameStart()
+
+
+
+    }
+
+    fun gameStart(){
+        val btnThrow = findViewById<Button>(R.id.btnThrow)
+        val btnScore = findViewById<Button>(R.id.btnScore)
+        val tvHumanScore = findViewById<TextView>(R.id.tvHumanScore)
+        val tvComputerScore = findViewById<TextView>(R.id.tvComputerScore)
 
         val btnHumanDie1 = findViewById<ImageButton>(R.id.ibtnHuman1)
         val btnHumanDie2 = findViewById<ImageButton>(R.id.ibtnHuman2)
@@ -31,24 +53,28 @@ class GameScreen : AppCompatActivity() {
         val human = HumanDice(humanDice)
         val computer = ComputerDice(computerDice)
 
-        val btnThrow = findViewById<Button>(R.id.btnThrow)
-        val btnScore = findViewById<Button>(R.id.btnScore)
-
         btnThrow.setOnClickListener(){
+
             rethrowCount++
+
+//            Change the text of the button to "Re-Throw" after the first throw
             if (rethrowCount > 0)
                 btnThrow.text = "Re-Throw"
-                btnScore.isEnabled = true
-                humanDice.forEachIndexed() { index, btn ->
-                    btn.setOnClickListener() {
-                        if (!human.getDice()[index].isDieEnabled() || human.lockDiceCount() < 4) {
-                            human.getDice()[index].dieEnableToggle()
-                        }
-                        else{
-                            Toast.makeText(this, "You can only lock 4 dice", Toast.LENGTH_SHORT).show()
-                        }
+
+//            Enable the score button after the first throw
+            btnScore.isEnabled = true
+
+//            Enable the dice buttons after the first throw
+            humanDice.forEachIndexed() { index, btn ->
+                btn.setOnClickListener() {
+                    if (!human.getDice()[index].isDieEnabled() || human.lockDiceCount() < 4) {
+                        human.getDice()[index].dieEnableToggle()
+                    }
+                    else{
+                        Toast.makeText(this, "You can only lock 4 dice", Toast.LENGTH_SHORT).show()
                     }
                 }
+            }
 
 
             if (rethrowCount > 2) {
@@ -56,23 +82,42 @@ class GameScreen : AppCompatActivity() {
                     die.isEnabled = false
                 }
                 btnThrow.isEnabled = false
-                btnThrow.setBackgroundColor(ContextCompat.getColor(this, R.color.Gray))
             }
             human.throwDice()
+            tvHumanScore.text = human.totalScore().toString()
             computer.throwDice()
+            tvComputerScore.text = computer.totalScore().toString()
         }
 
         btnScore.setOnClickListener(){
-            val humanScore = human.totalScore()
-            val builder = AlertDialog.Builder(this)
-            builder.setTitle("Score")
-            builder.setMessage("Human Score: $humanScore")
-            builder.setPositiveButton("OK") { dialog, which ->
-                // do something when OK button is clicked
-            }
-            val dialog = builder.create()
-            dialog.show()
-        }
+            val humanTotalScoreTextView = findViewById<TextView>(R.id.tvTotalHumanScore)
 
+            totalHumanScore += human.totalScore()
+            humanTotalScoreTextView.text = totalHumanScore.toString()
+            gameStart()
+
+//            Disable dice lock after score is submitted
+            humanDice.forEach {
+                it.setOnClickListener { null }
+            }
+            resetDices(human,computer)
+        }
     }
+
+    fun resetDices(human:HumanDice, computer:ComputerDice){
+        val btnThrow = findViewById<Button>(R.id.btnThrow)
+        val btnScore = findViewById<Button>(R.id.btnScore)
+        btnScore.isEnabled = false
+        btnThrow.isEnabled = true
+
+        btnThrow.text = "Throw"
+
+        // Disable all the dice buttons and set their images to the initial state
+        human.resetDice()
+        computer.resetDice()
+
+        // Reset the number of rethrows
+        rethrowCount = 0
+    }
+
 }

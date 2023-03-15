@@ -6,7 +6,74 @@
     android:layout_height="match_parent"
     tools:context=".GameScreen">
 
+
     <LinearLayout
+        android:id="@+id/scoreBoard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="right"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvHuman"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="You"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvTotalHumanScore"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="-"
+                android:textSize="16sp" />
+
+            <Space
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10" />
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvComputer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Computer"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvTotalComputerScore"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="-"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@+id/scoreBoard"
         android:id="@+id/diceColumns"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -68,6 +135,16 @@
                 android:contentDescription="@string/die_for_human"
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/die_5" />
+
+            <TextView
+                android:id="@+id/tvHumanScore"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="-"
+                android:textSize="24sp" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -139,6 +216,15 @@
                 android:longClickable="false"
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/die_5" />
+
+            <TextView
+                android:id="@+id/tvComputerScore"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="-"
+                android:textSize="24sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -170,5 +256,6 @@
             android:text="Score" />
 
     </LinearLayout>
+
 
 </RelativeLayout>
