@@ -22,10 +22,12 @@ class GameScreen : AppCompatActivity() {
     private var targetScore = 0
     private var humanThrowCount: Int = 0
     private var computerThrowCount: Int = 0
-    private var allowedThrows: Int = 3
+    private var allowedHumanThrows: Int = 3
+    private var allowedComputerThrows: Int = 3
     private lateinit var human: HumanDice
     private lateinit var computer: ComputerDice
     private var resultAnnounced = false
+    private var tied = false
 
 
     @SuppressLint("SetTextI18n")
@@ -100,16 +102,19 @@ class GameScreen : AppCompatActivity() {
             lockDice()
 
 //          Changing the text of the throw button after the first throw
-            if (humanThrowCount>0){
+            if (!tied && humanThrowCount>0){
                 btnThrow.text = "Re-Throw"
             }
 
 //          Reset game after all the given throws are used
-            if (humanThrowCount >= allowedThrows) {
+            if (humanThrowCount >= allowedHumanThrows) {
                 btnThrow.isEnabled = false
                 btnScore.isEnabled = false
 
-                Toast.makeText(this, "Out of throws! Score will update soon", Toast.LENGTH_SHORT).show()
+                if (!tied){
+                    Toast.makeText(this, "Out of throws! Score will update soon", Toast.LENGTH_SHORT).show()
+                }
+
 //              Little delay show user what are the random dice values that he/she got in the last rethrow
                 handler.postDelayed({
                     calScore()
@@ -257,7 +262,12 @@ class GameScreen : AppCompatActivity() {
             val dialog = builder.create()
             dialog.show()
         }
-        else{
+        else if (totalHumanScore >= targetScore && totalHumanScore == totalComputerScore){
+            allowedHumanThrows = 1
+            allowedComputerThrows = 1
+            tied = true
+            resetGame()
+        }else{
             resetGame()
         }
 
@@ -289,7 +299,7 @@ class GameScreen : AppCompatActivity() {
 
 private fun computerLogic(computer: ComputerDice): ComputerDice{
     computer.resetDiceLock()
-    if (computerThrowCount in 1..2){
+    if (!tied && computerThrowCount in 1..2){
         val beforeTotalScore = computer.totalScore()
         computerThrowCount++
 //            If computer has a score more than 26, it will not roll the dice
@@ -419,7 +429,10 @@ override fun onSaveInstanceState(outState: Bundle) {
     outState.putInt("totalComputerScore", totalComputerScore)
     outState.putInt("humanThrowCount", humanThrowCount)
     outState.putInt("computerThrowCount", computerThrowCount)
+    outState.putInt("allowedHumanThrows", allowedHumanThrows)
+    outState.putInt("allowedComputerThrows", allowedComputerThrows)
     outState.putBoolean("resultAnnounced", resultAnnounced)
+    outState.putBoolean("tied", tied)
     outState.putSerializable("computerDice", computer)
     outState.putSerializable("humanDice", human)
 }
@@ -431,7 +444,10 @@ override fun onRestoreInstanceState(savedInstanceState: Bundle) {
     totalComputerScore = savedInstanceState.getInt("totalComputerScore")
     humanThrowCount = savedInstanceState.getInt("humanThrowCount")
     computerThrowCount = savedInstanceState.getInt("computerThrowCount")
+    allowedHumanThrows = savedInstanceState.getInt("allowedHumanThrows")
+    allowedComputerThrows = savedInstanceState.getInt("allowedComputerThrows")
     resultAnnounced = savedInstanceState.getBoolean("resultAnnounced")
+    tied = savedInstanceState.getBoolean("tied")
 
     human = savedInstanceState.getSerializable("humanDice") as HumanDice
     computer = savedInstanceState.getSerializable("computerDice") as ComputerDice
@@ -451,7 +467,13 @@ override fun onRestoreInstanceState(savedInstanceState: Bundle) {
     val btnScore = findViewById<Button>(R.id.btnScore)
 
 //    Recreating visual elements as it should be after screen rotation
-    if (humanThrowCount>0) {
+    if (tied){
+        tvHumanDice.text = human.totalScore().toString()
+        tvComputerDice.text = computer.totalScore().toString()
+        btnThrow.text = "Throw"
+        btnScore.isEnabled = true
+    }
+    else if (humanThrowCount>0) {
         tvHumanDice.text = human.totalScore().toString()
         tvComputerDice.text = computer.totalScore().toString()
         btnThrow.text = "Re-throw"
