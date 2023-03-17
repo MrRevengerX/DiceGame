@@ -1,5 +1,6 @@
 package com.example.dicegame
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,6 +14,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         supportActionBar?.hide()
+
+
+        val sharedPref = getSharedPreferences("gamePref", Context.MODE_PRIVATE)
+        val editor = sharedPref.edit()
+        var winCount = sharedPref.getInt("wins", 0)
+        var lossCount = sharedPref.getInt("losses", 0)
+        editor.putInt("wins", winCount)
+        editor.putInt("losses", lossCount)
+        editor.apply()
 
         val inputTargetScore = findViewById<EditText>(R.id.inputTargetScore)
 

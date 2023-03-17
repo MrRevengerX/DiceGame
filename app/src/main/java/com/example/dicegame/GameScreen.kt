@@ -1,13 +1,14 @@
 package com.example.dicegame
 
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 
 
 class GameScreen : AppCompatActivity() {
@@ -28,6 +29,17 @@ class GameScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game_screen)
         supportActionBar?.hide()
+
+
+        val sharedPref = getSharedPreferences("gamePref", Context.MODE_PRIVATE)
+        var currentWins = sharedPref.getInt("wins", 0)
+        var currentLosses = sharedPref.getInt("losses", 0)
+
+        val winLossCountTextView = findViewById<TextView>(R.id.winLossCount)
+        winLossCountTextView.text = "H:$currentWins/C:$currentLosses"
+
+
+
 
 //        Retrieving the target score from the previous activity
         targetScore = intent.getIntExtra("targetScore", 0)
@@ -189,6 +201,7 @@ class GameScreen : AppCompatActivity() {
 
 //  Function to calculate the score and update the total score
     private fun calScore(){
+        val winLossCountTextView = findViewById<TextView>(R.id.winLossCount)
         val humanTotalScoreTextView = findViewById<TextView>(R.id.tvTotalHumanScore)
         val computerTotalScoreTextView = findViewById<TextView>(R.id.tvTotalComputerScore)
 
@@ -202,19 +215,38 @@ class GameScreen : AppCompatActivity() {
         totalHumanScore += human.totalScore()
         humanTotalScoreTextView.text = totalHumanScore.toString()
 
+//    Initializing shared preferences
+        val sharedPref = getSharedPreferences("gamePref", Context.MODE_PRIVATE)
+        val editor = sharedPref.edit()
+        var currentWins = sharedPref.getInt("wins", 0)
+        var currentLosses = sharedPref.getInt("losses", 0)
+
+
 //      Logic for decide win lose or draw
         if (totalHumanScore >= targetScore && totalHumanScore > totalComputerScore){
             Toast.makeText(this, "You won!", Toast.LENGTH_SHORT).show()
+            currentWins++
+            winLossCountTextView.text = "H:$currentWins/C:$currentLosses"
+            Toast.makeText(this, "$currentWins", Toast.LENGTH_SHORT).show()
             resultAnnounced = true
+            sharedPref.edit().putInt("win_count", currentLosses).apply()
         }
 
         else if (totalComputerScore >= targetScore && totalComputerScore > totalHumanScore){
             Toast.makeText(this, "You lost!", Toast.LENGTH_SHORT).show()
+            currentLosses++
+
+            winLossCountTextView.text = "H:$currentWins/C:$currentLosses"
             resultAnnounced = true
+            sharedPref.edit().putInt("win_count", currentLosses).apply()
         }
         else{
             resetGame()
         }
+
+        editor.putInt("wins", currentWins)
+        editor.putInt("losses", currentLosses)
+        editor.apply()
 
     }
 
