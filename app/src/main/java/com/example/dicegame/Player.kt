@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import java.io.Serializable
 
 open class Player(diceValues: Array<Int>) : Serializable {
-    private var dieValues = diceValues
     private val dice: Array<Die> = arrayOf(Die(diceValues[0]), Die(diceValues[1]), Die(diceValues[2]), Die(diceValues[3]), Die(diceValues[4]))
 
 
@@ -55,9 +54,6 @@ open class Player(diceValues: Array<Int>) : Serializable {
 //        dice[index].setDieImage(value)
 //    }
 
-    fun getDieButtonArray(): Array<Int> {
-        return dieValues
-    }
     fun totalScore(): Int {
         var total = 0
         for (die in this.dice) {
@@ -66,17 +62,6 @@ open class Player(diceValues: Array<Int>) : Serializable {
         return total
     }
 
-    fun resetDice() {
-        for (i in 1..6){
-            dice[i-1].setDieValue(i)
-        }
-    }
-
-    fun resetDiceEnabled() {
-        for (die in this.dice) {
-            die.setDieEnabled(true)
-        }
-    }
 
     fun dieEnableToggle(index:Int, value: Int): Int {
 //        change die image to disable state

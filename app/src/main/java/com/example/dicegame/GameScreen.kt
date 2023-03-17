@@ -12,6 +12,7 @@ import android.widget.Toast
 
 class GameScreen : AppCompatActivity() {
 
+//    Initializing variables
     private var totalHumanScore = 0
     private var totalComputerScore = 0
     private var targetScore = 0
@@ -26,22 +27,27 @@ class GameScreen : AppCompatActivity() {
         setContentView(R.layout.activity_game_screen)
         supportActionBar?.hide()
 
+//        Retrieving the target score from the previous activity
         targetScore = intent.getIntExtra("targetScore", 0)
 
-//        Set the target score to the user entered value
+//        Set the target score according to the value retrieved target value
         val tvTargetScore = findViewById<TextView>(R.id.tvTargetScore)
         tvTargetScore.text = targetScore.toString()
 
         gameStart()
     }
-//
+
+//    Function to start the game
     private fun gameStart(){
         val handler = Handler()
 
+//    Initializing the dice objects with mock values
         human = HumanDice(arrayOf(1,2,3,4,5))
         computer = ComputerDice(arrayOf(1,2,3,4,5))
 
-        drawDices(human,computer)
+//    Showing dice values on the screen
+        drawDices(human)
+        drawDices(computer)
 
 //        Declaring buttons and textViews
         val btnThrow = findViewById<Button>(R.id.btnThrow)
@@ -50,56 +56,59 @@ class GameScreen : AppCompatActivity() {
         val tvComputerScore = findViewById<TextView>(R.id.tvComputerScore)
 
 
-
-
 //        Adding click event listener to throw button
         btnThrow.setOnClickListener{
             rethrowCount++
+
+//            Throw dice for human and computer
             human.throwDice()
             computer.throwDice()
-            drawDices(human,computer)
+
+//            Updating the addition of the 5 dice values for human and computer
+            tvHumanScore.text = human.totalScore().toString()
+            tvComputerScore.text = computer.totalScore().toString()
+
+//            Changing dice element according to the dice value
+            drawDices(human)
+//            Only roll the dice if it is the first throw
+            if (rethrowCount<=1){
+                drawDices(computer)
+            }
 
 //            Enable the score button after the first throw
             btnScore.isEnabled = true
 
-//            human.resetDiceEnabled()
+//          Function to enable dice lock functionality
             lockDice()
 
+//          Changing the text of the throw button after the first throw
+            if (rethrowCount>0){
+                btnThrow.text = "Re-Throw"
+            }
 
-
-//            Enable locking dice after the first throw
-//            humanDice.forEachIndexed() { index, btn ->
-//                val valueOfTheDice = human.getDice()[index].getDieValue()
-//                btn.setImageResource(human.dieEnableToggle(valueOfTheDice))
-//            }
-
-//            Throw dice for human and computer
-            tvHumanScore.text = human.totalScore().toString()
-            tvComputerScore.text = computer.totalScore().toString()
-
-//            If rethrow count is greater than 2, disable the throw button and add score to the total score
-            if (rethrowCount > 2) {
+//                Reset game after all the given throws are used
+            if (rethrowCount >= allowedThrows) {
                 btnThrow.isEnabled = false
+                btnScore.isEnabled = false
 
                 Toast.makeText(this, "Out of throws! Score will update soon", Toast.LENGTH_SHORT).show()
-//                Reset game after using all throws
+//                Little delay before reset the game, to show user what are the random dice values that he/she got in the last rethrow
                 handler.postDelayed({
                     calScore()
                     resetGame()
                 }, 1000)
-            }else{
-//                Toast.makeText(this, "${allowedThrows-rethrowCount} throws left.", Toast.LENGTH_SHORT).show()
             }
         }
 
+//    Calculate score and resets the game if the score button clicked.
         btnScore.setOnClickListener{
             calScore()
             resetGame()
         }
     }
 
+//    Function to handle locking of dice
     private fun lockDice(){
-
         val btnHumanDie1 = findViewById<ImageButton>(R.id.ibtnHuman1)
         val btnHumanDie2 = findViewById<ImageButton>(R.id.ibtnHuman2)
         val btnHumanDie3 = findViewById<ImageButton>(R.id.ibtnHuman3)
@@ -110,20 +119,28 @@ class GameScreen : AppCompatActivity() {
         humanDice.forEachIndexed{ index, btn ->
             btn.setOnClickListener{
                 val valueOfTheDice = human.getDice()[index].getDieValue()
+
+//                Lock only maximum of 4 dice
                 if (human.getDice()[index].isDieEnabled() && human.lockDiceCount() < 4) {
                     btn.setImageResource(human.dieEnableToggle(index, valueOfTheDice))
                     human.getDice()[index].setDieEnabled(false)
-                } else if (!human.getDice()[index].isDieEnabled()) {
+                }
+//                Unlock dice if it is already locked
+                else if (!human.getDice()[index].isDieEnabled()) {
                     btn.setImageResource(human.dieEnableToggle(index, valueOfTheDice))
                     human.getDice()[index].setDieEnabled(true)
-                } else {
+                }
+//                Show error message to the user if he/she tries to lock more than 4 dice
+                else {
                     Toast.makeText(this, "You can only lock 4 dice", Toast.LENGTH_SHORT).show()
                 }
             }
         }
     }
 
-    private fun drawDices(human: HumanDice, computer: ComputerDice){
+
+//    Function to show relevant dice images on the screen
+    private fun drawDices(human: HumanDice){
         val btnHumanDie1 = findViewById<ImageButton>(R.id.ibtnHuman1)
         val btnHumanDie2 = findViewById<ImageButton>(R.id.ibtnHuman2)
         val btnHumanDie3 = findViewById<ImageButton>(R.id.ibtnHuman3)
@@ -138,6 +155,10 @@ class GameScreen : AppCompatActivity() {
                 btn.setImageResource(human.getLockedDiceImageResource(human.getDice()[index].getDieValue()))
         }
 
+    }
+
+//    Overloaded the function
+    private fun drawDices(computer: ComputerDice){
         val btnComputerDie1 = findViewById<ImageButton>(R.id.ibtnComputer1)
         val btnComputerDie2 = findViewById<ImageButton>(R.id.ibtnComputer2)
         val btnComputerDie3 = findViewById<ImageButton>(R.id.ibtnComputer3)
@@ -150,6 +171,7 @@ class GameScreen : AppCompatActivity() {
         }
     }
 
+//    Function to calculate the score and update the total score
     private fun calScore(){
         val humanTotalScoreTextView = findViewById<TextView>(R.id.tvTotalHumanScore)
         val computerTotalScoreTextView = findViewById<TextView>(R.id.tvTotalComputerScore)
@@ -159,18 +181,27 @@ class GameScreen : AppCompatActivity() {
 
         totalHumanScore += human.totalScore()
         humanTotalScoreTextView.text = totalHumanScore.toString()
+
+
     }
 
+//    Function to reset all the functionality and visual elements of the game
     private fun resetGame(){
-
-
         val tvHumanScore = findViewById<TextView>(R.id.tvHumanScore)
         val tvComputerScore = findViewById<TextView>(R.id.tvComputerScore)
 
+
+        val btnHumanDie1 = findViewById<ImageButton>(R.id.ibtnHuman1)
+        val btnHumanDie2 = findViewById<ImageButton>(R.id.ibtnHuman2)
+        val btnHumanDie3 = findViewById<ImageButton>(R.id.ibtnHuman3)
+        val btnHumanDie4 = findViewById<ImageButton>(R.id.ibtnHuman4)
+        val btnHumanDie5 = findViewById<ImageButton>(R.id.ibtnHuman5)
+        val humanDice = arrayOf(btnHumanDie1, btnHumanDie2, btnHumanDie3, btnHumanDie4, btnHumanDie5)
+
 //            Disable dice lock after score is submitted
-//        human.getDieButtonArray().forEach {
-//            it.setOnClickListener { null }
-//        }
+        humanDice.forEach {
+            it.setOnClickListener { null }
+        }
 
 //            Resetting score after submitting the score
         tvHumanScore.text = "-"
@@ -189,7 +220,8 @@ class GameScreen : AppCompatActivity() {
         computer = ComputerDice(arrayOf(1,2,3,4,5))
 
 
-        drawDices(human,computer)
+        drawDices(human)
+        drawDices(computer)
 
         // Reset the number of rethrows
         rethrowCount = 0
@@ -197,7 +229,7 @@ class GameScreen : AppCompatActivity() {
 //        gameStart()
     }
 
-//    save data when rotating device
+//    Function to save data on device rotation
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putInt("totalHumanScore", totalHumanScore)
@@ -206,7 +238,8 @@ class GameScreen : AppCompatActivity() {
         outState.putSerializable("computerDice", computer)
         outState.putSerializable("humanDice", human)
     }
-//
+
+//  Function to restore data on device rotation
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         totalHumanScore = savedInstanceState.getInt("totalHumanScore")
@@ -227,24 +260,35 @@ class GameScreen : AppCompatActivity() {
         val tvHumanDice = findViewById<TextView>(R.id.tvHumanScore)
         val tvComputerDice = findViewById<TextView>(R.id.tvComputerScore)
 
+        val btnThrow = findViewById<Button>(R.id.btnThrow)
+        val btnScore = findViewById<Button>(R.id.btnScore)
+
+//    Recreating visual elements as it should be after screen rotation
         if (rethrowCount>0) {
             tvHumanDice.text = human.totalScore().toString()
             tvComputerDice.text = computer.totalScore().toString()
+            btnThrow.text = "Re-throw"
+            btnScore.isEnabled = true
         }
 //        Toast.makeText(this, "Restoring data", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "${human.getDice()[0].getDieValue()},${human.getDice()[1].getDieValue()},${human.getDice()[2].getDieValue()},${human.getDice()[3].getDieValue()},${human.getDice()[4].getDieValue()}", Toast.LENGTH_SHORT).show()
 
-        reDrawDices(human, computer)
+        drawDices(human)
+        drawDices(computer)
+        if (rethrowCount>0){
+            lockDice()
+        }
 
     }
 //
-    private fun reDrawDices(resHuman: HumanDice, resComputer: ComputerDice) {
-//        Get value of each dice and show them in a toast
-        Toast.makeText(this, "${resHuman.getDice()[0].getDieValue()},${resHuman.getDice()[1].getDieValue()},${resHuman.getDice()[2].getDieValue()},${resHuman.getDice()[3].getDieValue()},${resHuman.getDice()[4].getDieValue()}", Toast.LENGTH_SHORT).show()
-        drawDices(resHuman, resComputer)
-
-    if (rethrowCount>0){
-        lockDice()
-    }
-
-    }
+//    private fun reDrawDices(resHuman: HumanDice, resComputer: ComputerDice) {
+////        Get value of each dice and show them in a toast
+//        Toast.makeText(this, "${resHuman.getDice()[0].getDieValue()},${resHuman.getDice()[1].getDieValue()},${resHuman.getDice()[2].getDieValue()},${resHuman.getDice()[3].getDieValue()},${resHuman.getDice()[4].getDieValue()}", Toast.LENGTH_SHORT).show()
+//        drawDices(resHuman, resComputer)
+//
+//        if (rethrowCount>0){
+//            lockDice()
+//        }
+//
+//    }
 }
