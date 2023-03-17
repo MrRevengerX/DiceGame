@@ -9,10 +9,9 @@
 
 
     <LinearLayout
+        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/purple_100"
-        android:gravity="center"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -33,7 +32,7 @@
                     android:layout_width="200dp"
                     android:layout_height="70dp"
                     android:layout_weight="1"
-                    android:backgroundTint="@color/purple_200"
+                    android:backgroundTint="@color/Gray"
                     android:contentDescription="@string/die_for_human"
                     android:scaleType="fitCenter"
                     app:srcCompat="@drawable/die_1_img"
@@ -44,7 +43,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="70dp"
                     android:layout_weight="1"
-                    android:backgroundTint="@color/purple_200"
+                    android:backgroundTint="@color/Gray"
                     android:contentDescription="@string/die_for_human"
                     android:scaleType="fitCenter"
                     app:srcCompat="@drawable/die_2_img" />
@@ -54,7 +53,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="70dp"
                     android:layout_weight="1"
-                    android:backgroundTint="@color/purple_200"
+                    android:backgroundTint="@color/Gray"
                     android:contentDescription="@string/die_for_human"
                     android:scaleType="fitCenter"
                     app:srcCompat="@drawable/die_3_img" />
@@ -64,7 +63,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="70dp"
                     android:layout_weight="1"
-                    android:backgroundTint="@color/purple_200"
+                    android:backgroundTint="@color/Gray"
                     android:contentDescription="@string/die_for_human"
                     android:scaleType="fitCenter"
                     app:srcCompat="@drawable/die_4_img" />
@@ -74,7 +73,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="70dp"
                     android:layout_weight="1"
-                    android:backgroundTint="@color/purple_200"
+                    android:backgroundTint="@color/Gray"
                     android:contentDescription="@string/die_for_human"
                     android:scaleType="fitCenter"
                     app:srcCompat="@drawable/die_5_img" />
@@ -186,7 +185,6 @@
                     android:layout_marginBottom="20dp"
                     android:gravity="center"
                     android:text="H:0/C:0"
-                    android:textColor="@color/DefaultDark"
                     android:textStyle="bold" />
 
                 <LinearLayout
@@ -201,7 +199,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Target Score"
-                        android:textColor="@color/DefaultDark"
                         android:textSize="24sp"
                         android:textStyle="bold" />
 
@@ -210,9 +207,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0"
-                        android:textColor="@color/DefaultDark"
-                        android:textColorHighlight="@color/purple_150"
-                        android:textColorLink="@color/purple_200"
                         android:textSize="24sp" />
                 </LinearLayout>
 
@@ -236,7 +230,6 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
                             android:text="You"
-                            android:textColor="@color/DefaultDark"
                             android:textSize="20sp"
                             android:textStyle="bold" />
 
@@ -246,7 +239,6 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
                             android:text="-"
-                            android:textColor="@color/DefaultDark"
                             android:textSize="16sp" />
 
                         <Space
@@ -268,7 +260,6 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="Computer"
-                            android:textColor="@color/DefaultDark"
                             android:textSize="20sp"
                             android:textStyle="bold" />
 
@@ -278,7 +269,6 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="-"
-                            android:textColor="@color/DefaultDark"
                             android:textSize="16sp" />
 
                     </LinearLayout>
