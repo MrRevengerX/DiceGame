@@ -9,16 +9,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
+        android:layout_centerVertical="true"
+        android:background="@color/purple_100"
         android:gravity="center"
-        android:layout_centerVertical="true">
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/homePageDice"
             android:layout_width="217dp"
             android:layout_height="154dp"
-            app:srcCompat="@drawable/homescreen_dice"
-            android:layout_marginRight="100dp"/>
+            android:layout_marginRight="100dp"
+            app:srcCompat="@drawable/homescreen_dice_dark" />
 
         <LinearLayout
             android:id="@+id/gameControllers"
@@ -36,13 +37,15 @@
                 android:layout_marginBottom="10dp"
                 android:gravity="center"
                 android:text="H:0/C:0"
+                android:textColor="@color/DefaultDark"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Game Target" />
+                android:text="Game Target"
+                android:textColor="@color/DefaultDark" />
 
             <EditText
                 android:id="@+id/inputTargetScore"
@@ -53,6 +56,9 @@
                 android:gravity="center"
                 android:hint="101"
                 android:inputType="number"
+                android:textColor="@color/DefaultDark"
+                android:textColorHighlight="@color/purple_150"
+                android:textColorLink="@color/purple_200"
                 android:textSize="20sp" />
 
             <Button
@@ -61,8 +67,10 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/white"
                 android:text="New Game"
+                android:textColor="@color/DefaultDark"
                 app:icon="@android:drawable/ic_media_play"
-                app:iconSize="15sp" />
+                app:iconSize="15sp"
+                app:iconTint="@color/DefaultDark" />
 
             <Button
                 android:id="@+id/btnInfo"
@@ -71,8 +79,10 @@
                 android:layout_marginTop="15dp"
                 android:backgroundTint="@color/white"
                 android:text="Info"
+                android:textColor="@color/DefaultDark"
                 app:icon="@android:drawable/ic_dialog_info"
-                app:iconSize="12sp" />
+                app:iconSize="12sp"
+                app:iconTint="@color/DefaultDark" />
 
         </LinearLayout>
     </LinearLayout>
