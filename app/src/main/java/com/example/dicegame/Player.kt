@@ -1,14 +1,26 @@
 package com.example.dicegame
 
-import android.widget.ImageButton
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import java.io.Serializable
 
 open class Player(diceValues: Array<Int>) : Serializable {
     private val dice: Array<Die> = arrayOf(Die(diceValues[0]), Die(diceValues[1]), Die(diceValues[2]), Die(diceValues[3]), Die(diceValues[4]))
 
-    fun lockDiceCount(): Int {
+
+    fun getDice(): Array<Die> {
+        return dice
+    }
+
+//    Function to get the value of the dice
+    fun getDieValueArray(): Array<Int> {
+        val dieValueArray = arrayOf(0, 0, 0, 0, 0)
+        for (i in 0..4) {
+            dieValueArray[i] = dice[i].getDieValue()
+        }
+        return dieValueArray
+    }
+
+//    Function to get total locked elements in the dice
+    fun getLockDiceCount(): Int {
         var count = 0
         for (die in this.dice) {
             if (!die.isDieEnabled()) {
@@ -18,24 +30,7 @@ open class Player(diceValues: Array<Int>) : Serializable {
         return count
     }
 
-    fun getDice(): Array<Die> {
-        return dice
-    }
-
-    fun getDieValueArray(): Array<Int> {
-        val dieValueArray = arrayOf(0, 0, 0, 0, 0)
-        for (i in 0..4) {
-            dieValueArray[i] = dice[i].getDieValue()
-        }
-        return dieValueArray
-    }
-
-    fun throwDice() {
-        for (die in this.dice) {
-            die.rollDie()
-        }
-    }
-
+//    Function to get the image resource of the dice
     fun getDiceImageResource(number: Int): Int {
         return when (number) {
             1 -> R.drawable.die_1_img
@@ -47,12 +42,7 @@ open class Player(diceValues: Array<Int>) : Serializable {
         }
     }
 
-    fun resetDiceLock() {
-        for (die in this.dice) {
-            die.setDieEnabled(true)
-        }
-    }
-
+//    Function to get the image resource of the locked dice
     fun getLockedDiceImageResource(number: Int): Int {
         return when (number) {
             1 -> R.drawable.die_1_locked
@@ -64,10 +54,22 @@ open class Player(diceValues: Array<Int>) : Serializable {
         }
     }
 
-//    fun reDrawDie(index: Int,value: Int) {
-//        dice[index].setDieImage(value)
-//    }
+//    Function to roll dice
+    fun throwDice() {
+        for (die in this.dice) {
+            die.rollDie()
+        }
+    }
 
+//    Function to reset the dice to enabled state
+    fun resetDiceLock() {
+        for (die in this.dice) {
+            die.setDieEnabled(true)
+        }
+    }
+
+
+//    Function to calculate the total score of the dice
     fun totalScore(): Int {
         var total = 0
         for (die in this.dice) {
@@ -76,7 +78,7 @@ open class Player(diceValues: Array<Int>) : Serializable {
         return total
     }
 
-
+//    Function to get image resource for die according to its locked or unlocked state
     fun dieEnableToggle(index:Int, value: Int): Int {
 //        change die image to disable state
         if (dice[index].isDieEnabled()) {

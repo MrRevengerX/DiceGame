@@ -14,17 +14,9 @@ class Die(value:Int): java.io.Serializable {
         }
     }
 
-    fun setDieValue(value: Int) {
-        dieValue = value
+    fun getDieValue(): Int {
+        return dieValue
     }
-
-//    fun getDieImage(value: Int): Int {
-//        return dieImages[value]
-//    }
-//
-//    fun setDieImage(num:Int) {
-//        die.setImageResource(dieImages[num-1])
-//    }
 
     fun isDieEnabled(): Boolean {
         return enabled
@@ -34,9 +26,6 @@ class Die(value:Int): java.io.Serializable {
         enabled = value
     }
 
-    fun getDieValue(): Int {
-        return dieValue
-    }
 
 
 }
