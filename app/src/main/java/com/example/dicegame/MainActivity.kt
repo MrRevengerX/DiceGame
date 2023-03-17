@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 
 class MainActivity : AppCompatActivity() {
@@ -40,14 +41,24 @@ class MainActivity : AppCompatActivity() {
         btnNewGame.setOnClickListener{
             val targetScore = inputTargetScore.text.toString()
 //            If the target score is not entered, setting the value to 101 and send the value to the next activity
-            if (targetScore == "") {
+            if (targetScore.isBlank()) {
                 val intent = Intent(this, GameScreen::class.java)
                 intent.putExtra("targetScore", 101)
                 startActivity(intent)
             } else {
-                val intent = Intent(this, GameScreen::class.java)
-                intent.putExtra("targetScore", targetScore.toInt())
-                startActivity(intent)
+                val maximumTargetScore = 5000
+                try {
+                    val targetScoreInt = targetScore.toInt()
+                    if (targetScoreInt > maximumTargetScore) {
+                        Toast.makeText(this, "Target score cannot be greater than $maximumTargetScore", Toast.LENGTH_SHORT).show()
+                    } else {
+                        val intent = Intent(this, GameScreen::class.java)
+                        intent.putExtra("targetScore", targetScoreInt)
+                        startActivity(intent)
+                    }
+                } catch (e: NumberFormatException) {
+                    Toast.makeText(this, "Target score cannot be greater than $maximumTargetScore", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
