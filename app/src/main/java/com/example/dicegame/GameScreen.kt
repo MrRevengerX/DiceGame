@@ -423,6 +423,8 @@ private fun resetGame(){
 }
 
 //    Function to save data on device rotation
+
+//    Reference : https://medium.com/@doyouseeitmyway/save-and-restore-instance-state-made-easy-cf6f175f54b0
 override fun onSaveInstanceState(outState: Bundle) {
     super.onSaveInstanceState(outState)
     outState.putInt("totalHumanScore", totalHumanScore)

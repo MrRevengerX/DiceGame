@@ -31,6 +31,7 @@ open class Player(diceValues: Array<Int>) : Serializable {
     }
 
 //    Function to get the image resource of the dice
+//    Reference : https://kotlinlang.org/docs/control-flow.html#when-expression
     fun getDiceImageResource(number: Int): Int {
         return when (number) {
             1 -> R.drawable.die_1_img
