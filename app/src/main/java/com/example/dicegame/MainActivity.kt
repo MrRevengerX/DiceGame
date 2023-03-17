@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 
 class MainActivity : AppCompatActivity() {
@@ -23,6 +24,9 @@ class MainActivity : AppCompatActivity() {
         editor.putInt("wins", winCount)
         editor.putInt("losses", lossCount)
         editor.apply()
+
+        val winLossCountTextView = findViewById<TextView>(R.id.homeWinLossCount)
+        winLossCountTextView.text = "H:$winCount/C:$lossCount"
 
         val inputTargetScore = findViewById<EditText>(R.id.inputTargetScore)
 

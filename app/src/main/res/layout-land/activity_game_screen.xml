@@ -184,7 +184,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
                     android:gravity="center"
-                    android:text="H:0/C:0" />
+                    android:text="H:0/C:0"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:id="@+id/targetScore"
