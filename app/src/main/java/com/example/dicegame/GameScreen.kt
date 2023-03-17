@@ -62,18 +62,18 @@ class GameScreen : AppCompatActivity() {
 
 //            Throw dice for human and computer
             human.throwDice()
-            computer.throwDice()
-
-//            Updating the addition of the 5 dice values for human and computer
-            tvHumanScore.text = human.totalScore().toString()
-            tvComputerScore.text = computer.totalScore().toString()
 
 //            Changing dice element according to the dice value
             drawDices(human)
 //            Only roll the dice if it is the first throw
             if (rethrowCount<=1){
+                computer.throwDice()
                 drawDices(computer)
             }
+
+//            Updating the addition of the 5 dice values for human and computer
+            tvHumanScore.text = human.totalScore().toString()
+            tvComputerScore.text = computer.totalScore().toString()
 
 //            Enable the score button after the first throw
             btnScore.isEnabled = true
@@ -95,15 +95,17 @@ class GameScreen : AppCompatActivity() {
 //                Little delay before reset the game, to show user what are the random dice values that he/she got in the last rethrow
                 handler.postDelayed({
                     calScore()
-                    resetGame()
+//                    resetGame()
                 }, 1000)
             }
         }
 
 //    Calculate score and resets the game if the score button clicked.
         btnScore.setOnClickListener{
+            btnThrow.isEnabled = false
+            btnScore.isEnabled = false
             calScore()
-            resetGame()
+//            resetGame()
         }
     }
 
@@ -182,6 +184,18 @@ class GameScreen : AppCompatActivity() {
         totalHumanScore += human.totalScore()
         humanTotalScoreTextView.text = totalHumanScore.toString()
 
+//    Logic for decide win lose or draw
+        if (totalHumanScore >= targetScore && totalHumanScore > totalComputerScore){
+            Toast.makeText(this, "You won!", Toast.LENGTH_SHORT).show()
+        }
+
+        else if (totalComputerScore >= targetScore && totalComputerScore > totalHumanScore){
+            Toast.makeText(this, "You lost!", Toast.LENGTH_SHORT).show()
+        }
+        else{
+            Toast.makeText(this, "Score updated!", Toast.LENGTH_SHORT).show()
+            resetGame()
+        }
 
     }
 
