@@ -8,8 +8,6 @@ import java.io.Serializable
 open class Player(diceValues: Array<Int>) : Serializable {
     private val dice: Array<Die> = arrayOf(Die(diceValues[0]), Die(diceValues[1]), Die(diceValues[2]), Die(diceValues[3]), Die(diceValues[4]))
 
-
-
     fun lockDiceCount(): Int {
         var count = 0
         for (die in this.dice) {
@@ -19,9 +17,19 @@ open class Player(diceValues: Array<Int>) : Serializable {
         }
         return count
     }
+
     fun getDice(): Array<Die> {
         return dice
     }
+
+    fun getDieValueArray(): Array<Int> {
+        val dieValueArray = arrayOf(0, 0, 0, 0, 0)
+        for (i in 0..4) {
+            dieValueArray[i] = dice[i].getDieValue()
+        }
+        return dieValueArray
+    }
+
     fun throwDice() {
         for (die in this.dice) {
             die.rollDie()
@@ -30,12 +38,18 @@ open class Player(diceValues: Array<Int>) : Serializable {
 
     fun getDiceImageResource(number: Int): Int {
         return when (number) {
-            1 -> R.drawable.die_1
-            2 -> R.drawable.die_2
-            3 -> R.drawable.die_3
-            4 -> R.drawable.die_4
-            5 -> R.drawable.die_5
-            else -> R.drawable.die_6
+            1 -> R.drawable.die_1_img
+            2 -> R.drawable.die_2_img
+            3 -> R.drawable.die_3_img
+            4 -> R.drawable.die_4_img
+            5 -> R.drawable.die_5_img
+            else -> R.drawable.die_6_img
+        }
+    }
+
+    fun resetDiceLock() {
+        for (die in this.dice) {
+            die.setDieEnabled(true)
         }
     }
 
@@ -76,12 +90,12 @@ open class Player(diceValues: Array<Int>) : Serializable {
             }
         } else {
             return when (value) {
-                1 -> R.drawable.die_1
-                2 -> R.drawable.die_2
-                3 -> R.drawable.die_3
-                4 -> R.drawable.die_4
-                5 -> R.drawable.die_5
-                else -> R.drawable.die_6
+                1 -> R.drawable.die_1_img
+                2 -> R.drawable.die_2_img
+                3 -> R.drawable.die_3_img
+                4 -> R.drawable.die_4_img
+                5 -> R.drawable.die_5_img
+                else -> R.drawable.die_6_img
             }
         }
     }

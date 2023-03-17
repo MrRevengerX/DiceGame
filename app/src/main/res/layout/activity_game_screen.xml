@@ -126,7 +126,7 @@
                     android:backgroundTint="@color/Gray"
                     android:contentDescription="@string/die_for_human"
                     android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/die_1"
+                    app:srcCompat="@drawable/die_1_img"
                     tools:ignore="SpeakableTextPresentCheck,DuplicateSpeakableTextCheck" />
 
                 <ImageButton
@@ -137,7 +137,7 @@
                     android:backgroundTint="@color/Gray"
                     android:contentDescription="@string/die_for_human"
                     android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/die_2" />
+                    app:srcCompat="@drawable/die_2_img" />
 
                 <ImageButton
                     android:id="@+id/ibtnHuman3"
@@ -147,7 +147,7 @@
                     android:backgroundTint="@color/Gray"
                     android:contentDescription="@string/die_for_human"
                     android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/die_3" />
+                    app:srcCompat="@drawable/die_3_img" />
 
                 <ImageButton
                     android:id="@+id/ibtnHuman4"
@@ -157,7 +157,7 @@
                     android:backgroundTint="@color/Gray"
                     android:contentDescription="@string/die_for_human"
                     android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/die_4" />
+                    app:srcCompat="@drawable/die_4_img" />
 
                 <ImageButton
                     android:id="@+id/ibtnHuman5"
@@ -167,7 +167,7 @@
                     android:backgroundTint="@color/Gray"
                     android:contentDescription="@string/die_for_human"
                     android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/die_5" />
+                    app:srcCompat="@drawable/die_5_img" />
 
                 <TextView
                     android:id="@+id/tvHumanScore"
@@ -196,7 +196,7 @@
                     android:contextClickable="false"
                     android:longClickable="false"
                     android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/die_1" />
+                    app:srcCompat="@drawable/die_1_img" />
 
                 <ImageButton
                     android:id="@+id/ibtnComputer2"
@@ -209,7 +209,7 @@
                     android:contextClickable="false"
                     android:longClickable="false"
                     android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/die_2" />
+                    app:srcCompat="@drawable/die_2_img" />
 
                 <ImageButton
                     android:id="@+id/ibtnComputer3"
@@ -222,7 +222,7 @@
                     android:contextClickable="false"
                     android:longClickable="false"
                     android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/die_3" />
+                    app:srcCompat="@drawable/die_3_img" />
 
                 <ImageButton
                     android:id="@+id/ibtnComputer4"
@@ -235,7 +235,7 @@
                     android:contextClickable="false"
                     android:longClickable="false"
                     android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/die_4" />
+                    app:srcCompat="@drawable/die_4_img" />
 
                 <ImageButton
                     android:id="@+id/ibtnComputer5"
@@ -248,7 +248,7 @@
                     android:contextClickable="false"
                     android:longClickable="false"
                     android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/die_5" />
+                    app:srcCompat="@drawable/die_5_img" />
 
                 <TextView
                     android:id="@+id/tvComputerScore"
