@@ -2,4 +2,6 @@
     <string name="app_name">Dice Game</string>
     <string name="die_for_human">Die for human</string>
     <string name="die_for_computer">Die for computer</string>
+    <string name="rethrow">Re-Throw</string>
+    <string name="throww">Throw</string>
 </resources>

@@ -1,6 +1,8 @@
 package com.example.dicegame
 
 
+import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
@@ -11,6 +13,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 
+@Suppress("DEPRECATION")
 class GameScreen : AppCompatActivity() {
 
 //    Initializing variables
@@ -25,20 +28,19 @@ class GameScreen : AppCompatActivity() {
     private var resultAnnounced = false
 
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game_screen)
         supportActionBar?.hide()
 
-
+//        Retrieving the win and loss count from the shared preferences
         val sharedPref = getSharedPreferences("gamePref", Context.MODE_PRIVATE)
-        var currentWins = sharedPref.getInt("wins", 0)
-        var currentLosses = sharedPref.getInt("losses", 0)
+        val currentWins = sharedPref.getInt("wins", 0)
+        val currentLosses = sharedPref.getInt("losses", 0)
 
         val winLossCountTextView = findViewById<TextView>(R.id.winLossCount)
         winLossCountTextView.text = "H:$currentWins/C:$currentLosses"
-
-
 
 
 //        Retrieving the target score from the previous activity
@@ -208,6 +210,7 @@ class GameScreen : AppCompatActivity() {
 
 //      Run the logic for computer to score
         computer = computerLogic(computer)
+        calRollScore(computer)
 
         totalComputerScore += computer.totalScore()
         computerTotalScoreTextView.text = totalComputerScore.toString()
@@ -224,21 +227,35 @@ class GameScreen : AppCompatActivity() {
 
 //      Logic for decide win lose or draw
         if (totalHumanScore >= targetScore && totalHumanScore > totalComputerScore){
-            Toast.makeText(this, "You won!", Toast.LENGTH_SHORT).show()
             currentWins++
             winLossCountTextView.text = "H:$currentWins/C:$currentLosses"
-            Toast.makeText(this, "$currentWins", Toast.LENGTH_SHORT).show()
             resultAnnounced = true
             sharedPref.edit().putInt("win_count", currentLosses).apply()
+
+// Reference : https://stackoverflow.com/questions/22655599/alertdialog-builder-with-custom-layout-and-edittext-cannot-access-view
+            val builder = AlertDialog.Builder(this)
+            val inflater = layoutInflater
+            val dialogLayout = inflater.inflate(R.layout.winner_popup, null)
+            builder.setView(dialogLayout)
+            builder.setPositiveButton("OK") { _, _ -> }
+            val dialog = builder.create()
+            dialog.show()
         }
 
         else if (totalComputerScore >= targetScore && totalComputerScore > totalHumanScore){
-            Toast.makeText(this, "You lost!", Toast.LENGTH_SHORT).show()
             currentLosses++
 
             winLossCountTextView.text = "H:$currentWins/C:$currentLosses"
             resultAnnounced = true
             sharedPref.edit().putInt("win_count", currentLosses).apply()
+
+            val builder = AlertDialog.Builder(this)
+            val inflater = layoutInflater
+            val dialogLayout = inflater.inflate(R.layout.loser_popup, null)
+            builder.setView(dialogLayout)
+            builder.setPositiveButton("OK") { _, _ -> }
+            val dialog = builder.create()
+            dialog.show()
         }
         else{
             resetGame()
@@ -255,13 +272,13 @@ class GameScreen : AppCompatActivity() {
     Strategy for computer to score
 
    Here i haven't considered total score of computer and human as a variable to this logic
-   because computer will win if it has the ability to user given rerolls to get maximum score
+   because computer will win if it has the ability to use given throws to get maximum score
    from a given set of dices.
 
     1. If computer has a score more than 26, it will not roll the dice
     2. If computer has low score, lock dices larger than 4 and roll again
         - If computer score lower than before, it will throw again
-    3. If computer has score below than 24 and does not have dice with value 5,6 this will reroll all the dice
+    3. If computer has score below than 24 and does not have dice with value 5,6 this will throw all the dice
         - If computer score more than before it return the score
         - if computer got 6 or 5 after the throw, it will rethrow the dice
     4. If computer has dice with value 5,6 with score lower than 23, it will lock dices with value 5,6 and roll again
@@ -273,7 +290,7 @@ class GameScreen : AppCompatActivity() {
 private fun computerLogic(computer: ComputerDice): ComputerDice{
     computer.resetDiceLock()
     if (computerThrowCount in 1..2){
-        var beforeTotalScore = computer.totalScore()
+        val beforeTotalScore = computer.totalScore()
         computerThrowCount++
 //            If computer has a score more than 26, it will not roll the dice
         if (computer.totalScore()>26){
@@ -283,7 +300,7 @@ private fun computerLogic(computer: ComputerDice): ComputerDice{
 //      If computer has low score, lock large dice and roll again
         if (computer.totalScore() in 5..10){
 
-            computer.getDice().forEachIndexed(){ index, die ->
+            computer.getDice().forEachIndexed{ index, die ->
                 if (die.getDieValue() > 4 && computer.getLockDiceCount() < 4){
                     computer.getDice()[index].setDieEnabled(false)
                 }
@@ -292,8 +309,6 @@ private fun computerLogic(computer: ComputerDice): ComputerDice{
                 }
             }
             computer.throwDice()
-            Toast.makeText(this, "low rolled the dice $computerThrowCount", Toast.LENGTH_SHORT).show()
-            Toast.makeText(this, "low scored ${computer.totalScore()}", Toast.LENGTH_SHORT).show()
             drawDices(computer)
             if (computer.totalScore() < beforeTotalScore+10){
                 computerLogic(computer)
@@ -316,7 +331,7 @@ private fun computerLogic(computer: ComputerDice): ComputerDice{
         }
 //      if computer has a score less than 23, and it has a 6 or 5, it will lock the dice and roll again
         if ((6 in computer.getDieValueArray() || 5 in computer.getDieValueArray()) && computer.totalScore()<=23){
-            computer.getDice().forEachIndexed(){ index, die ->
+            computer.getDice().forEachIndexed{ index, die ->
                 if (die.getDieValue() == 6 && computer.getLockDiceCount() < 4){
                     computer.getDice()[index].setDieEnabled(false)
                 }else if(die.getDieValue() == 5 && computer.getLockDiceCount() < 4){
@@ -327,8 +342,6 @@ private fun computerLogic(computer: ComputerDice): ComputerDice{
                 }
             }
             computer.throwDice()
-            Toast.makeText(this, "rolled the dice $computerThrowCount", Toast.LENGTH_SHORT).show()
-            Toast.makeText(this, "scored ${computer.totalScore()}", Toast.LENGTH_SHORT).show()
             drawDices(computer)
             if (beforeTotalScore+5 > computer.totalScore()){
                 computerLogic(computer)
@@ -337,7 +350,7 @@ private fun computerLogic(computer: ComputerDice): ComputerDice{
         }
 //      if computer has a score more than 23, it will dice with value 1,2,3 and roll again
         if (computer.totalScore()>=23){
-            computer.getDice().forEachIndexed(){ index, die ->
+            computer.getDice().forEachIndexed{ index, die ->
                 if (die.getDieValue() <= 3){
                     computer.getDice()[index].setDieEnabled(true)
                 }else{
@@ -345,8 +358,6 @@ private fun computerLogic(computer: ComputerDice): ComputerDice{
                 }
             }
             computer.throwDice()
-            Toast.makeText(this, "Computer rolled the dice $computerThrowCount", Toast.LENGTH_SHORT).show()
-            Toast.makeText(this, "Computer scored ${computer.totalScore()}", Toast.LENGTH_SHORT).show()
             drawDices(computer)
             if (beforeTotalScore > computer.totalScore()){
                 computerLogic(computer)
@@ -451,14 +462,11 @@ override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         btnThrow.isEnabled = false
         btnScore.isEnabled = false
     }
-    Toast.makeText(this, "${human.getDice()[0].getDieValue()},${human.getDice()[1].getDieValue()},${human.getDice()[2].getDieValue()},${human.getDice()[3].getDieValue()},${human.getDice()[4].getDieValue()}", Toast.LENGTH_SHORT).show()
 
     drawDices(human)
     drawDices(computer)
     if (humanThrowCount>0){
         lockDice()
     }
-
 }
-
 }
